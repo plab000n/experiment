@@ -1,0 +1,30 @@
+name: C Program Build & Test
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install GCC
+        run: sudo apt-get update && sudo apt-get install -y gcc
+
+      - name: Compile C Program
+        run: gcc testt.c -o test_prog
+
+      - name: Run Program With Test Input
+        run: ./test_prog < test-input.txt > program-output.txt
+
+      - name: Show Program Output
+        run: cat program-output.txt
+
+      - name: Compare Output With Expected
+        run: diff -u program-output.txt test-output.txt
